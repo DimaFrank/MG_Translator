@@ -6,3 +6,4 @@ langdetect
 Pillow
 openpyxl
 lxml
+deep_translator
