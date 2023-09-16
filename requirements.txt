@@ -1,0 +1,8 @@
+streamlit
+PIL
+pandas
+io 
+requests
+bs4 
+langdetect
+time
