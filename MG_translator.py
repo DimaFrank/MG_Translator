@@ -3,7 +3,7 @@ from PIL import Image
 import pandas as pd
 from io import BytesIO
 import requests
-from deep_translator import GoogleTranslator
+# from deep_translator import GoogleTranslator
 from bs4 import BeautifulSoup
 import langdetect
 from langdetect import detect
