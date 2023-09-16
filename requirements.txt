@@ -1,6 +1,5 @@
 streamlit
 pandas
-io 
 requests
 bs4 
 langdetect
