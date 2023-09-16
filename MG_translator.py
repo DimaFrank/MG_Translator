@@ -3,7 +3,8 @@ from PIL import Image
 import pandas as pd
 from io import BytesIO
 import requests
-# from deep_translator import GoogleTranslator
+import deep_translator
+from deep_translator import GoogleTranslator
 from bs4 import BeautifulSoup
 import langdetect
 from langdetect import detect
@@ -119,6 +120,11 @@ def get_full_translation(word):
         return get_translation(word.split('/')[0])
     return get_translation(word)
 
+def alternative_translation(word):
+    if "No results found for the word" in get_full_translation(word):
+        return GoogleTranslator(source='iw', target='ru').translate(word)
+    else:
+        return get_full_translation(word)
 
 
 def main():
@@ -132,7 +138,7 @@ def main():
     if uploaded_file is not None:
             df = pd.read_excel(uploaded_file, header=None, names=['Иврит'])
 
-            df[['Пeревод']] = df['Иврит'].apply(lambda x: pd.Series(get_full_translation(x)))
+            df[['Пeревод']] = df['Иврит'].apply(lambda x: pd.Series(alternative_translation(x)))
             df[['Транскрипция']] = df['Иврит'].apply(lambda x: pd.Series(get_full_transcription(x)))
             df[['Примеры']] = df['Иврит'].apply(lambda x: pd.Series(get_examples(x)))    
 
