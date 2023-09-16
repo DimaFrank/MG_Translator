@@ -123,7 +123,7 @@ def get_full_translation(word):
 def main():
     st.title("Welcome to MG Translator")
 
-    image = Image.open("C:\\Users\\DimaFrank\\MyApps\\Transcription\\main_pic.jpeg")
+    image = Image.open("main_pic.jpeg")
     st.image(image, caption="By Meital Goldberg")
   
     uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx"])
