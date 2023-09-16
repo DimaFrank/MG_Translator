@@ -3,4 +3,4 @@ pandas
 requests
 bs4 
 langdetect
-PIL
+Pillow
