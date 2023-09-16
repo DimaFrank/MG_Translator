@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import langdetect
 from langdetect import detect
 import time
+import openpyxl
 
 
 def get_transcription(phrase):
