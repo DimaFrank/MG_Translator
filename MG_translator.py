@@ -30,6 +30,11 @@ def get_transcription(phrase):
 
             for element in transcription_elements:
                 if element.get_text() not in ['шинита', 'шинисо']:
+                    # Find the <b> tag and update its contents to uppercase
+                    b_tag = element.find('b')
+                    if b_tag:
+                        b_tag.string = b_tag.string.upper()
+                    
                     filtered_transcriptions.append(element)
 
             if len(filtered_transcriptions) > 0:
@@ -46,7 +51,7 @@ def get_transcription(phrase):
 def get_full_transcription(word):
     if '/' in word:
         male = word.split('/')[0]
-        female = male+word.split('/')[1]
+        female = male + word.split('/')[1]
         result = f"{get_transcription(male)} / {get_transcription(female)}"
     else:
         result = get_transcription(word)
