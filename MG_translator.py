@@ -173,7 +173,7 @@ def main():
 
         translation = translator.translate(input_text)
         transcription = " ".join([get_full_transcription(word) for word in input_text.split()]) 
-        transcription.replace("ERROR: No transcription found for word", "__")
+        transcription = transcription.replace("ERROR: No transcription found for word", "__")
         if st.button("Translate"):
             if input_text:                          
                 st.caption(f''':blue[Translation] :sunglasses: :{translation} ''')
