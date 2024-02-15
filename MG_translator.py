@@ -133,35 +133,53 @@ def alternative_translation(word):
 
 
 def main():
-    st.title("Welcome to MG Translator")
 
-    image = Image.open("main_pic.jpeg")
-    st.image(image, caption="By Meital Goldberg")
-  
-    uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx"])
+    main_tab, sentence_tab = st.tabs(["Upload File for translation", "Translate sentence"])
 
-    if uploaded_file is not None:
-            df = pd.read_excel(uploaded_file, header=None, names=['Иврит'])
+    with main_tab:
+        st.title("Welcome to MG Translator")
 
-            df[['Пeревод']] = df['Иврит'].apply(lambda x: pd.Series(alternative_translation(x)))
-            df[['Транскрипция']] = df['Иврит'].apply(lambda x: pd.Series(get_full_transcription(x)))
-            df[['Примеры']] = df['Иврит'].apply(lambda x: pd.Series(get_examples(x)))    
+        image = Image.open("main_pic.jpeg")
+        st.image(image, caption="By Meital Goldberg")
+    
+        uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx"])
 
-            excel_buffer = BytesIO()
-            df.to_excel(excel_buffer, index=False, engine='openpyxl')
-            excel_buffer.seek(0)
+        if uploaded_file is not None:
+                df = pd.read_excel(uploaded_file, header=None, names=['Иврит'])
 
-            with st.spinner('Wait for it...'):
-                time.sleep(5)
-            st.success('Done!')        
-            st.balloons()
+                df[['Пeревод']] = df['Иврит'].apply(lambda x: pd.Series(alternative_translation(x)))
+                df[['Транскрипция']] = df['Иврит'].apply(lambda x: pd.Series(get_full_transcription(x)))
+                df[['Примеры']] = df['Иврит'].apply(lambda x: pd.Series(get_examples(x)))    
 
-            st.download_button(
-                label="Download Updated Excel File",
-                data=excel_buffer.getvalue(),
-                file_name="updated_file.xlsx",
-                key="download_button",
-            )
+                excel_buffer = BytesIO()
+                df.to_excel(excel_buffer, index=False, engine='openpyxl')
+                excel_buffer.seek(0)
+
+                with st.spinner('Wait for it...'):
+                    time.sleep(5)
+                st.success('Done!')        
+                st.balloons()
+
+                st.download_button(
+                    label="Download Updated Excel File",
+                    data=excel_buffer.getvalue(),
+                    file_name="updated_file.xlsx",
+                    key="download_button",
+                )
+
+    with sentence_tab: 
+        input_text = st.text_area(label='תכניסי את המשפט שאת רוצה לתרגם')  
+        translator = GoogleTranslator(source='iw', target='ru')
+
+        translation = translator.translate(input_text)
+        transcription = " ".join([get_full_transcription(word) for word in input_text.split()])   
+        if st.button("Translate"):
+            if input_text:                          
+                st.caption(f''':blue[Translation] :sunglasses: :{translation} ''')
+                st.caption(f''':blue[Transcription] :sunglasses: :{transcription} ''')
+
+
+
 
 if __name__ == "__main__":
     main()
